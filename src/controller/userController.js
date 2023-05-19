@@ -3,11 +3,15 @@ import jwt from "jsonwebtoken";
 import e from "express";
 
 let getUser = async(req,res) =>{
-
-    const [rows,field] = await pool.execute("Select * from accounts")
-    return res.status(200).json({
-        dataUser:rows
-    });
+    try{
+        const [rows,field] = await pool.execute("Select * from accounts")
+        return res.status(200).json({
+            dataUser:rows
+        });
+    }
+    catch(e){
+        console.log(e);
+    }
 }
 
 let getUserByID = async(req,res) =>{
