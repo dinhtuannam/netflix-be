@@ -28,7 +28,7 @@ const addPlaylist = async(req,res)=>{
             return res.status(200).json({result:true,message:"Add movie success"})
         }
     }
-    catch{
+    catch(e){
         console.log("req : " + req.body)
         console.log("error : " + e)
     }
