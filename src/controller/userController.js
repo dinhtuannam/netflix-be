@@ -128,8 +128,10 @@ let login = async(req,res)=>{
             return res.status(404).json({result:"missing username or password"})
         const [rows,field] = await pool.execute(`Select * from accounts where username = ? and password = ? `,
         [username,password])
-        if(rows.length<=0)
+        if(rows.length<=0){
+            await pool.releaseConnection();
             return res.status(200).json({message:"username or password are not correct"})
+        }       
         else{
             const accessToken = generateAccessToken(rows);
             const refreshToken = generateRefreshToken(rows);
@@ -139,6 +141,7 @@ let login = async(req,res)=>{
                 sameSite: "strict"
             })
             const {password,...data} = rows[0]
+            await pool.releaseConnection();
             return res.status(200).json({
                 dataUser:data,
                 token:accessToken,
